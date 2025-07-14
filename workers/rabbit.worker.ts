@@ -71,6 +71,7 @@ export async function PubSubProducer(
 export async function PubSubConsumer(
   channel: Channel,
   exchange: string,
+  queueName: string,
   callback: (message: string) => void
 ) {
   if (!channel) {
@@ -80,7 +81,7 @@ export async function PubSubConsumer(
   await channel.assertExchange(exchange, "fanout", {
     durable: false,
   });
-  const q = await channel.assertQueue("", { exclusive: false });
+  const q = await channel.assertQueue(queueName, { exclusive: false });
   await channel.bindQueue(q.queue, exchange, "");
   channel.consume(q.queue, (message: Message | null) => {
     if (message) {
@@ -117,6 +118,45 @@ export async function PubSubConsumerWithRoutingKey(
     return;
   }
   await channel.assertExchange(exchange, "direct", {
+    durable: false,
+  });
+  const q = await channel.assertQueue("", { exclusive: false });
+  await channel.bindQueue(q.queue, exchange, routingKey);
+  channel.consume(q.queue, (message: Message | null) => {
+    if (message) {
+      callback(message.content.toString() + message.fields.routingKey);
+      channel.ack(message);
+    }
+  });
+}
+
+// Pub/Sub System with topic
+
+export async function PubSubProducerWithTopic(
+  channel: Channel,
+  exchange: string,
+  routingKey: string,
+  data: string
+) {
+  if (!channel) {
+    console.log("RABBITMQ is not connected!");
+    return;
+  }
+  await channel.assertExchange(exchange, "topic", { durable: false });
+  channel.publish(exchange, routingKey, Buffer.from(data));
+}
+
+export async function PubSubConsumerWithTopic(
+  channel: Channel,
+  exchange: string,
+  routingKey: string,
+  callback: (message: string) => void
+) {
+  if (!channel) {
+    console.log("RABBITMQ is not connected!");
+    return;
+  }
+  await channel.assertExchange(exchange, "topic", {
     durable: false,
   });
   const q = await channel.assertQueue("", { exclusive: false });
