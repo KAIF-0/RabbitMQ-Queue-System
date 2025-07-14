@@ -1,0 +1,20 @@
+{
+  "name": "queueing-system",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "producer": "bun --watch run producer.ts",
+    "consumer": "bun --watch run consumer.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/amqplib": "^0.10.7",
+    "amqplib": "^0.10.8"
+  }
+}
