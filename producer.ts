@@ -25,7 +25,7 @@ setInterval(async () => {
 setInterval(async () => {
   await PubSubProducerWithRoutingKey(
     channel as Channel,
-    "logs_2",
+    "logs_2",  
     "routingKey_1",
     "Hello World_1"
   );
@@ -41,7 +41,7 @@ setInterval(async () => {
 }, 1000);
 
 //publichsing message for pub/sub system with topics
-setInterval(async () => {
+setInterval(async () => { 
   await PubSubProducerWithTopic(
     channel as Channel,
     "logs_3",

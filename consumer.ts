@@ -23,7 +23,7 @@ PubSubConsumer(channel as Channel, "logs_1", "queue_1", (message: string) => {
   console.log("Message received on consumer 1: ", message);
 });
 
-PubSubConsumer(channel as Channel, "logs_1", "queue_2", (message: string) => {
+PubSubConsumer(channel as Channel, "logs_1", "queue_1", (message: string) => {
   console.log("Message received on consumer 2: ", message);
 });
 
@@ -32,6 +32,7 @@ PubSubConsumerWithRoutingKey(
   channel as Channel,
   "logs_2",
   "routingKey_1",
+  "queue_1",
   (message: string) => {
     console.log("Message received on consumer 1: ", message);
   }
@@ -41,6 +42,7 @@ PubSubConsumerWithRoutingKey(
   channel as Channel,
   "logs_2",
   "routingKey_2",
+  "queue_2",
   (message: string) => {
     console.log("Message received on consumer 2: ", message);
   }

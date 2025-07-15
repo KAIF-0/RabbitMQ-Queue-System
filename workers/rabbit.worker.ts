@@ -106,11 +106,12 @@ export async function PubSubProducerWithRoutingKey(
   await channel.assertExchange(exchange, "direct", { durable: false });
   channel.publish(exchange, routingKey, Buffer.from(data));
 }
-
+  
 export async function PubSubConsumerWithRoutingKey(
   channel: Channel,
   exchange: string,
   routingKey: string,
+  queueName: string,
   callback: (message: string) => void
 ) {
   if (!channel) {
@@ -120,7 +121,7 @@ export async function PubSubConsumerWithRoutingKey(
   await channel.assertExchange(exchange, "direct", {
     durable: false,
   });
-  const q = await channel.assertQueue("", { exclusive: false });
+  const q = await channel.assertQueue(queueName, { exclusive: false });
   await channel.bindQueue(q.queue, exchange, routingKey);
   channel.consume(q.queue, (message: Message | null) => {
     if (message) {
