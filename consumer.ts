@@ -61,7 +61,7 @@ PubSubConsumerWithTopic(
 PubSubConsumerWithTopic(
   channel as Channel,
   "logs_3",
-  "*.info.*", // "#" for every topic
+  "*.info.*", // "#" for every topic and '*' for one word exactly
   (message: string) => {
     console.log("Message received on consumer 2: ", message);
   }
